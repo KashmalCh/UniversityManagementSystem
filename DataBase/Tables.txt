@@ -1,0 +1,156 @@
+create database project;
+use project;
+create table Admin (ID  varchar (50) primary key , Password text not null);
+
+create table Student(SID varchar(13) primary key,Batch varchar(3) not null,
+FName varchar(30) not null, LName varchar(30) default null,Gender char not null,CNIC varchar(15)
+not null,DOB date not null, Address text not null,Email varchar(30) not null,FatherName varchar(30) default null,
+FatherCNIC varchar(20) default null,Occupation text default null);
+
+create table Employee(EID varchar(13) primary key,
+FName varchar(30) not null, LName varchar(30) default null,Gender char not null,CNIC varchar(15)
+not null,DOB date not null, Address text not null,Email varchar(30) not null);
+
+create table Department(DID int primary key auto_increment, DName varchar(20) not null , DeanID varchar(13) default null , HOD_ID varchar(13)default null );
+alter table department add constraint fk_DeanID foreign key (DeanID) references Employee(EID); 
+alter table department add constraint fk_HOD_ID foreign key (HOD_ID) references Employee(EID); 
+
+create table Courses (CID varchar(20) primary key, CName varchar(20) not null,
+Cr_Hrs int(2) default null, Fee int default null);
+
+create table Collegeinfo(Sno int primary key auto_increment,SID varchar(13),CollegeName varchar(30),Percentagge float(5),
+Passingout_Year year);
+alter table Collegeinfo add constraint fk_SID foreign key(SID) references Student(SID);
+
+create Table Designation(ID int primary key auto_increment,Designation varchar(20) not null);
+
+create Table Employee_Designation
+(
+  EID varchar(13),
+  Desig_ID int,
+  primary key(EID,Desig_ID)
+);
+alter table Employee_Designation add constraint fk_EID foreign key(EID) references Employee(EID);
+alter table Employee_Designation add constraint fk_Desig_ID foreign key(Desig_ID) references Designation(ID);
+
+create Table Employee_Department
+(
+  EID varchar(13),
+  DID int,
+  primary key(EID,DID)
+);
+alter table Employee_Department add constraint fk_EID2 foreign key(EID) references Employee(EID);
+alter table Employee_Department add constraint fk_DID foreign key(DID) references Department(DID);
+
+create Table Employee_Courses
+(
+  EID varchar(13),
+  CID varchar(20),
+  primary key(EID,CID)
+);
+alter table Employee_Courses add constraint fk_EID3 foreign key(EID) references Employee(EID);
+alter table Employee_Courses add constraint fk_CID foreign key(CID) references Courses(CID);
+
+create Table Courses_Dept
+(
+  CID varchar(20),
+  DID int,
+  primary key(CID,DID)
+);
+alter table Courses_Dept add constraint fk_CID2 foreign key(CID) references Courses(CID);
+alter table Courses_Dept add constraint fk_DID2 foreign key(DID) references Department(DID);
+
+create table Semester(Sem_ID int(2) primary key);
+
+create Table Sem_Courses
+(
+  Sem_ID int(2),
+  CID varchar(20),
+  primary key(Sem_ID,CID)
+);
+alter table Sem_Courses add constraint fk_Sem_ID foreign key(Sem_ID) references Semester(Sem_ID);
+alter table Sem_Courses add constraint fk_CID3 foreign key(CID) references Courses(CID);
+
+create table Prerequisite( CID varchar(20) ,PreReqID varchar(20), Primary key(CID,PreReqID));
+alter table Prerequisite add constraint fk_CID4 foreign key(CID) references Courses(CID);
+alter table Prerequisite add constraint fk_PreReqID foreign key(PreReqID) references Courses(CID);
+
+create table Section(SectionID int primary key auto_increment, SName char);
+
+create table RollNo(Rno int primary key);
+
+create table Student_Section(SID varchar(13),SectionID int ,Rno int , primary key(SID,SectionID));
+alter table Student_Section add constraint fk_SID2 foreign key(SID) references Student(SID);
+alter table Student_Section add constraint fk_SectionID foreign key(SectionID) references Section(SectionID);
+alter table Student_Section add constraint fk_Rno foreign key(Rno) references RollNo(Rno);
+
+create Table Student_Current_Courses
+(
+  SID varchar(13),
+  CID varchar(20),
+   Quiz float(5) default 0, 
+  Assignment float(5) default 0,
+  Project float(5) default 0,
+  MidTerm float(5) default 0,
+  Final float(5) default 0,
+  Other float(5) default 0,
+  primary key(SID,CID)
+);
+alter table Student_Current_Courses add constraint fk_SID3 foreign key(SID) references Student(SID);
+alter table Student_Current_Courses add constraint fk_CID5 foreign key(CID) references Courses(CID);
+
+create Table Student_Studied_Courses
+(
+  SID varchar(13),
+  CID varchar(20),
+  Grade char,
+  primary key(SID,CID)
+);
+alter table Student_Studied_Courses add constraint fk_SID4 foreign key(SID) references Student(SID);
+alter table Student_Studied_Courses add constraint fk_CID6 foreign key(CID) references Courses(CID);
+
+create Table Teacher_Taught_Courses
+(
+  EID varchar(13),
+  CID varchar(20),
+  Times int,
+  primary key(EID,CID)
+);
+alter table Teacher_Taught_Courses add constraint fk_EID4 foreign key(EID) references Employee(EID);
+alter table Teacher_Taught_Courses add constraint fk_CID7 foreign key(CID) references Courses(CID);
+
+create table Scholarships(Type int primary key auto_increment,DiscountPercent float(5));
+
+create Table Employee_Info
+(
+  EID varchar(13),
+  Experience int(2),
+  Salary int ,
+  Joining_Year year,
+  primary key(EID,Experience)
+);
+alter table Employee_Info add constraint fk_EID5 foreign key(EID) references Employee(EID);
+
+create Table Student_Info
+(
+  SID varchar(13),
+  CGPA float(5),
+  Fee int ,
+  DiscountType int,
+  primary key(SID,CGPA)
+);
+alter table Student_Info add constraint fk_SID5 foreign key(SID) references Student(SID);
+alter table Student_Info add constraint fk_DiscountType foreign key(DiscountType) references Scholarships(Type);
+
+create Table Student_Department
+(
+  SID varchar(13),
+  DID int,
+  primary key(SID,DID)
+);
+alter table Student_Department add constraint fk_SID6 foreign key(SID) references Student(SID);
+alter table Student_Department add constraint fk_DID3 foreign key(DID) references Department(DID);
+
+show tables;
+desc department;
+

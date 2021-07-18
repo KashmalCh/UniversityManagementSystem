@@ -1,0 +1,10 @@
+.separator
+{
+    -fx-border-style: solid;
+    -fx-background-color: mediumseagreen;
+    -fx-fill: mediumseagreen;
+    -fx-text-fill: mediumseagreen;
+    -fx-border-width: 0.5px;
+    -fx-border-color: mediumseagreen;
+
+}

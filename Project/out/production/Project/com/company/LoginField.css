@@ -1,0 +1,8 @@
+.text-field
+{
+    -fx-background-color: transparent;
+    -fx-font-size: 15px Comic Sans;
+    -fx-font-family: "Comic Sans MS";
+    -fx-text-fill: SteelBlue;
+    -fx-font-weight: bold;
+}
